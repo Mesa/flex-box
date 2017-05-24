@@ -1,0 +1,167 @@
+$grid-columns: 12 !default;
+
+// Diese keys werden mit der Zahl erweitert "c#"
+$grid-breakpoints: ("x": 1px, "s": 600px, "m": 800px, "l": 1000px) !default;
+$media: () !default;
+$media-only: () !default;
+$grid-gutter: 1rem;
+
+$flex-class-name: ".col";
+$row-class-name: ".flex";
+
+body {
+    margin:  0;
+    padding: 0;
+}
+
+#{$row-class-name} {
+    box-sizing:      border-box;
+    width:           100%;
+    display:         flex;
+    flex-flow:       row wrap;
+
+    justify-content: space-between;
+    align-content:   stretch;
+    align-items:     stretch;
+    margin:          0;
+
+
+    &.stretch {
+        align-items: stretch;
+    }
+
+    &.center {
+        justify-content: center;
+        align-items: center;
+    }
+
+    &.space-around {
+        justify-content: space-around;
+    }
+
+    &.space-between {
+        justify-content: space-between;
+    }
+
+    &.flex-end {
+        justify-content: flex-end;
+    }
+
+    &.flex-start {
+        justify-content: flex-start;
+    }
+
+    &.fit {
+        > #{$flex-class-name} {
+            flex-grow:   1;
+            flex-shrink: 1;
+        }
+    }
+
+    &.flex-center {
+        align-items: center;
+        justify-content: center;
+    }
+
+    &.no-margin {
+        margin: 0;
+    }
+}
+
+
+@each $name, $size in $grid-breakpoints {
+
+    @for $i from 1 through $grid-columns {
+        #{$row-class-name}-#{$name}#{$i} {
+            @extend #{$row-class-name};
+
+            @media only all and (min-width: $size) {
+                > #{$flex-class-name} {
+                    flex-basis: percentage($i/$grid-columns);
+                }
+            }
+        }
+    }
+}
+
+#{$flex-class-name} {
+    box-sizing: border-box;
+    padding:    $grid-gutter;
+
+    min-height: 100%;
+
+
+    ul & {
+        list-style: none;
+    }
+}
+
+@each $name, $size in $grid-breakpoints {
+
+    @for $i from 1 through $grid-columns {
+
+        .#{$name}-#{$i} {
+            @extend #{$flex-class-name};
+            @media (min-width: $size) {
+                flex-basis: percentage($i/$grid-columns);
+            }
+        }
+
+        @media (min-width: $size) {
+            .left-#{$name}#{$i} {
+                margin-left: percentage(($i/$grid-columns));
+            }
+
+            .right-#{$name}#{$i} {
+                margin-right: percentage(($i/$grid-columns));
+            }
+        }
+
+    }
+}
+
+$lastValue: "";
+$lastName: "";
+
+@each $name, $size in $grid-breakpoints {
+
+    .show-#{$name} {
+        display: none;
+        @media (min-width: $size) {
+            display: flex;
+        }
+    }
+
+    @for $z from 1 through 12 {
+        .order-#{$name}-#{$z} {
+            @media (min-width: #{$lastValue}) {
+                order: #{$z};
+            }
+        }
+    }
+
+    $new: ($name: "only screen and (min-width: #{$size})");
+    $media: map_merge($media, $new);
+
+    @if ($lastValue != "") {
+        $new-only: ($lastName: "only screen and (min-width: #{$lastValue}) and (max-width: #{$size})");
+        $media-only: map_merge($media-only, $new-only);
+    }
+
+    $lastValue: $size + 1;
+    $lastName: $name;
+}
+
+
+
+/* Zugriff erfolgt dann wie folgt
+    @media #{map-get($media, "x-")} {
+
+}*/
+
+/*
+li {
+    #{$row-class-name} > & {
+        list-style: none;
+    }
+}*/
