@@ -1,18 +1,22 @@
 $grid-columns: 12 !default;
 
+$micro: "x" !default;
+$small: "s" !default;
+$medium: "m" !default;
+$large: "l" !default;
+
 // Diese keys werden mit der Zahl erweitert "c#"
-$grid-breakpoints: ("x": 1px, "s": 600px, "m": 800px, "l": 1000px) !default;
+$grid-breakpoints: (
+                       $micro: 1px,
+                       $small: 600px,
+                       $medium: 800px,
+                       $large: 1000px) !default;
 $media: () !default;
 $media-only: () !default;
 $grid-gutter: 1rem;
 
 $flex-class-name: ".col";
 $row-class-name: ".flex";
-
-body {
-    margin:  0;
-    padding: 0;
-}
 
 #{$row-class-name} {
     box-sizing:      border-box;
@@ -25,13 +29,15 @@ body {
     align-items:     stretch;
     margin:          0;
 
-
     &.stretch {
         align-items: stretch;
     }
 
     &.center {
         justify-content: center;
+    }
+
+    &.valign {
         align-items: center;
     }
 
@@ -59,7 +65,7 @@ body {
     }
 
     &.flex-center {
-        align-items: center;
+        align-items:     center;
         justify-content: center;
     }
 
@@ -67,7 +73,6 @@ body {
         margin: 0;
     }
 }
-
 
 @each $name, $size in $grid-breakpoints {
 
@@ -89,11 +94,6 @@ body {
     padding:    $grid-gutter;
 
     min-height: 100%;
-
-
-    ul & {
-        list-style: none;
-    }
 }
 
 @each $name, $size in $grid-breakpoints {
@@ -118,6 +118,7 @@ body {
         }
 
     }
+
 }
 
 $lastValue: "";
@@ -152,16 +153,8 @@ $lastName: "";
     $lastName: $name;
 }
 
-
-
-/* Zugriff erfolgt dann wie folgt
-    @media #{map-get($media, "x-")} {
-
-}*/
-
-/*
-li {
-    #{$row-class-name} > & {
-        list-style: none;
+@mixin media($name) {
+    @media #{map-get($media, $name)} {
+        @content
     }
-}*/
+}
