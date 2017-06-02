@@ -92,7 +92,6 @@ $row-class-name: ".flex";
 #{$flex-class-name} {
     box-sizing: border-box;
     padding:    $grid-gutter;
-
     min-height: 100%;
 }
 
@@ -101,7 +100,10 @@ $row-class-name: ".flex";
     @for $i from 1 through $grid-columns {
 
         .#{$name}-#{$i} {
-            @extend #{$flex-class-name};
+            box-sizing: border-box;
+            padding:    $grid-gutter;
+            min-height: 100%;
+
             @media (min-width: $size) {
                 flex-basis: percentage($i/$grid-columns);
             }
@@ -127,9 +129,14 @@ $lastName: "";
 @each $name, $size in $grid-breakpoints {
 
     .show-#{$name} {
-        display: none;
+        @media (max-width: $size) {
+            display: none;
+        }
+    }
+
+    .hide-#{$name} {
         @media (min-width: $size) {
-            display: flex;
+            display: none;
         }
     }
 
