@@ -1,22 +1,24 @@
 $grid-columns: 12 !default;
 
-$micro: "x" !default;
-$small: "s" !default;
-$medium: "m" !default;
-$large: "l" !default;
+$micro:  'x' !default;
+$small:  's' !default;
+$medium: 'm' !default;
+$large:  'l' !default;
 
-// Diese keys werden mit der Zahl erweitert "c#"
+// Diese keys werden mit der Zahl erweitert 'c#'
 $grid-breakpoints: (
-                       $micro: 1px,
-                       $small: 600px,
-                       $medium: 800px,
-                       $large: 1000px) !default;
+       $micro: 1px,
+       $small: 600px,
+       $medium: 800px,
+       $large: 1000px
+) !default;
+
 $media: () !default;
 $media-only: () !default;
 $grid-gutter: 1rem;
 
-$flex-class-name: ".col";
-$row-class-name: ".flex";
+$flex-class-name: '.col';
+$row-class-name: '.flex';
 
 #{$row-class-name} {
     box-sizing:      border-box;
@@ -123,8 +125,8 @@ $row-class-name: ".flex";
 
 }
 
-$lastValue: "";
-$lastName: "";
+$lastValue: '';
+$lastName: '';
 
 @each $name, $size in $grid-breakpoints {
 
@@ -148,11 +150,11 @@ $lastName: "";
         }
     }
 
-    $new: ($name: "only screen and (min-width: #{$size})");
+    $new: ($name: 'only screen and (min-width: #{$size})');
     $media: map_merge($media, $new);
 
-    @if ($lastValue != "") {
-        $new-only: ($lastName: "only screen and (min-width: #{$lastValue}) and (max-width: #{$size})");
+    @if ($lastValue != '') {
+        $new-only: ($lastName: 'only screen and (min-width: #{$lastValue}) and (max-width: #{$size})');
         $media-only: map_merge($media-only, $new-only);
     }
 
