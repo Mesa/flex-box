@@ -143,12 +143,25 @@ $lastName: '';
     }
 
     @for $z from 1 through 12 {
+
+/*       .order-#{$z} {
+            order: #{$z};
+        }*/
+
         .order-#{$name}-#{$z} {
-            @media (min-width: #{$lastValue}) {
-                order: #{$z};
+            @if ($lastValue != '') {
+                @media (min-width: #{$lastValue}) {
+                    order: #{$z};
+                }
+            } @else {
+                @media (min-width: #{$size}) {
+                    order: #{$z};
+                }
+
             }
         }
     }
+
 
     $new: ($name: 'only screen and (min-width: #{$size})');
     $media: map_merge($media, $new);
