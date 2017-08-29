@@ -15,7 +15,7 @@ $grid-breakpoints: (
 
 $media: () !default;
 $media-only: () !default;
-$grid-gutter: 1rem;
+$grid-gutter: 1rem !default;
 
 $flex-class-name: '.col';
 $row-class-name: '.flex';
