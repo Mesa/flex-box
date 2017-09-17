@@ -76,6 +76,16 @@ $row-class-name: '.flex';
     }
 }
 
+@for $i from 1 through $grid-columns {
+    #{$row-class-name}-#{$i} {
+        @extend #{$row-class-name};
+
+        > #{$flex-class-name} {
+            flex-basis: percentage($i/$grid-columns);
+        }
+    }
+}
+
 @each $name, $size in $grid-breakpoints {
 
     @for $i from 1 through $grid-columns {
