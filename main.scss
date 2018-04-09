@@ -1,13 +1,13 @@
 $grid-columns: 12 !default;
 
-$micro:  'x' !default;
-$small:  's' !default;
+$micro: 'x' !default;
+$small: 's' !default;
 $medium: 'm' !default;
-$large:  'l' !default;
+$large: 'l' !default;
 
-// Diese keys werden mit der Zahl erweitert 'c#'
 $grid-breakpoints: (
-       $micro: 1px,
+       '': 1px,
+       $micro: 300px,
        $small: 600px,
        $medium: 800px,
        $large: 1000px
@@ -16,20 +16,25 @@ $grid-breakpoints: (
 $media: () !default;
 $media-only: () !default;
 $grid-gutter: 1rem;
+$row-max-width: 100% !default;
 
-$flex-class-name: '.col';
-$row-class-name: '.flex';
+$flex-class-name: '.col' !default;
+$row-class-name: '.flex' !default;
 
 #{$row-class-name} {
     box-sizing:      border-box;
     width:           100%;
+    max-width:       $row-max-width;
     display:         flex;
     flex-flow:       row wrap;
-
     justify-content: space-between;
     align-content:   stretch;
     align-items:     stretch;
-    margin:          0;
+    margin:          0 auto;
+
+    img {
+        max-width: 100%;
+    }
 
     &.stretch {
         align-items: stretch;
@@ -76,10 +81,17 @@ $row-class-name: '.flex';
     }
 }
 
+$selector: '';
 @each $name, $size in $grid-breakpoints {
 
     @for $i from 1 through $grid-columns {
-        #{$row-class-name}-#{$name}#{$i} {
+        @if ($name == '') {
+            $selector: #{$row-class-name}-#{$i};
+        } @else {
+            $selector: #{$row-class-name}-#{$name}-#{$i}
+        }
+
+        #{$selector} {
             @extend #{$row-class-name};
 
             @media only all and (min-width: $size) {
@@ -95,34 +107,41 @@ $row-class-name: '.flex';
     box-sizing: border-box;
     padding:    $grid-gutter;
     min-height: 100%;
+    overflow: hidden;
 }
 
 @each $name, $size in $grid-breakpoints {
 
     @for $i from 1 through $grid-columns {
 
-        .#{$name}-#{$i} {
-            box-sizing: border-box;
-            padding:    $grid-gutter;
-            min-height: 100%;
+        @if ($name != '') {
+            .#{$name}-#{$i} {
+                box-sizing: border-box;
+                padding:    $grid-gutter;
+                min-height: 100%;
 
-            @media (min-width: $size) {
-                flex-basis: percentage($i/$grid-columns);
+                @media (min-width: $size) {
+                    flex-basis: percentage($i/$grid-columns);
+                }
             }
         }
 
         @media (min-width: $size) {
-            .left-#{$name}#{$i} {
+            @if ($name == '') {
+                $selector: #{$i};
+            } @else {
+                $selector: #{$name}-#{$i}
+            }
+
+            .left-#{$selector} {
                 margin-left: percentage(($i/$grid-columns));
             }
 
-            .right-#{$name}#{$i} {
+            .right-#{$selector} {
                 margin-right: percentage(($i/$grid-columns));
             }
         }
-
     }
-
 }
 
 $lastValue: '';
@@ -130,21 +149,38 @@ $lastName: '';
 
 @each $name, $size in $grid-breakpoints {
 
-    .show-#{$name} {
-        @media (max-width: $size) {
-            display: none;
+    @if ($name == '') {
+        $selector: '';
+    } @else {
+        $selector: -#{$name};
+    }
+
+    .show#{$selector} {
+        @media (max-width: ($size)) {
+            display: none !important;
         }
     }
 
-    .hide-#{$name} {
-        @media (min-width: $size) {
-            display: none;
+    .hide#{$selector} {
+        @media (min-width: ($size+1px)) {
+            display: none !important;
         }
     }
 
     @for $z from 1 through 12 {
-        .order-#{$name}-#{$z} {
-            @media (min-width: #{$lastValue}) {
+
+        @if ($name == '') {
+            $selector: '.order-#{$z};'
+        } @else {
+            $selector: ".order-#{$name}-#{$z}"
+        }
+
+        #{$selector} {
+            @if ($name != '') {
+                @media only all and (min-width: $size) {
+                    order: #{$z};
+                }
+            } @else {
                 order: #{$z};
             }
         }
