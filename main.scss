@@ -6,20 +6,20 @@ $medium: 'm' !default;
 $large: 'l' !default;
 
 $grid-breakpoints: (
-       '': 1px,
-       $micro: 300px,
-       $small: 600px,
+       '':      1px,
+       $micro:  300px,
+       $small:  600px,
        $medium: 800px,
-       $large: 1000px
+       $large:  1000px
 ) !default;
 
-$media: () !default;
+$media: ()      !default;
 $media-only: () !default;
-$grid-gutter: 1rem;
+$grid-gutter:   1rem !default;
 $row-max-width: 100% !default;
 
-$flex-class-name: '.col' !default;
-$row-class-name: '.flex' !default;
+$flex-class-name: '.col'  !default;
+$row-class-name:  '.flex' !default;
 
 #{$row-class-name} {
     box-sizing:      border-box;
